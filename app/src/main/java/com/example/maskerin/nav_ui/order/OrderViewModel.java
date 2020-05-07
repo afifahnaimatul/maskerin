@@ -1,16 +1,16 @@
-package com.example.maskerin.nav_ui.history;
+package com.example.maskerin.nav_ui.order;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class HistoryViewModel extends ViewModel {
+public class OrderViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
 
-    public HistoryViewModel() {
+    public OrderViewModel() {
         mText = new MutableLiveData<>();
-        //mText.setValue("This is historyr fragment");
+        mText.setValue("This is order fragment");
     }
 
     public LiveData<String> getText() {

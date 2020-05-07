@@ -10,46 +10,37 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.maskerin.LoginActivity;
 import com.example.maskerin.MapsActivity;
-import com.example.maskerin.adapter.PharmacyAdapter;
 import com.example.maskerin.R;
-import com.example.maskerin.class_object.Pharmacy;
-
-import java.util.ArrayList;
 
 public class PharmacyFragment extends Fragment {
 
-    private PharmacyViewModel pharmacyViewModel;
+    private PharmacyViewModel dashboardViewModel;
     public Button button = null;
     Intent intent;
-    View root;
-
-    RecyclerView recyclerView;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        pharmacyViewModel =
+        dashboardViewModel =
                 ViewModelProviders.of(this).get(PharmacyViewModel.class);
-        root = inflater.inflate(R.layout.fragment_pharmacy, container, false);
+        View root = inflater.inflate(R.layout.fragment_pharmacy, container, false);
         final TextView textView = root.findViewById(R.id.tv_pharmacy);
-        pharmacyViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
+        dashboardViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);
             }
         });
 
-        //button onclick listener
         intent = new Intent(getActivity(), MapsActivity.class);
         button = (Button) root.findViewById(R.id.bt_see_maps);
         button.setOnClickListener(new View.OnClickListener() {
@@ -58,31 +49,7 @@ public class PharmacyFragment extends Fragment {
             }
         });
 
-        init();
         return root;
-    }
-
-    public void init(){
-        ArrayList<Pharmacy> pharmacies = new ArrayList<>();
-        pharmacies.add(new Pharmacy("Apotek Sehat", "845m", "Jl. Sehat selalu setiap hari tanpa ada halangan",
-                "Sisa < 50", "02-05-20", "15:00", "085123456789"));
-        pharmacies.add(new Pharmacy("Apotek Jaya Sentosa", "75m", "Jl. Jaya sentosa sepanjang masa",
-                "Habis", "01-05-20", "23:00", "085123456789"));
-        pharmacies.add(new Pharmacy("Apotek Abadi Abada", "1025m", "Jl. Abadi selamanya",
-                "Sisa > 100", "05-05-20", "13:00", "085123456789"));
-        pharmacies.add(new Pharmacy("Apotek Mawar Melati Semuanya Indah", "327m", "Jl. Mawar adalah nama bunga yang wanginya kebangetan wes pokok",
-                "Sisa > 100", "02-05-20", "03:00", "085123456789"));
-        pharmacies.add(new Pharmacy("Apotek Lihat Kebunku", "2649m", "Jl. Lihat Kebunku penuh dengan bunga",
-                "Sisa < 50", "01-05-20", "09:00", "085123456789"));
-        pharmacies.add(new Pharmacy("Apotek Senyum Nyaman", "1963m", "Jl. Senyum nyaman senyaman kasur pas lagi capek-capeknya",
-                "Habis", "05-05-20", "10:00", "085123456789"));
-        pharmacies.add(new Pharmacy("Apotek Darah Muda", "100m", "Jl. Darahnya Para Remaja Uo Uooooo",
-                "Habis", "07-05-20", "05:00", "085123456789"));
-
-        recyclerView = root.findViewById(R.id.rv_list_of_pharmacy);
-        PharmacyAdapter myAdapter = new PharmacyAdapter(getActivity(), pharmacies);
-        recyclerView.setAdapter(myAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
 
     public void onCreate(@Nullable Bundle savedInstanceState){
