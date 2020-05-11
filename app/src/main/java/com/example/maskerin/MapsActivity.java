@@ -18,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
 
+
 import com.example.maskerin.class_object.Pharmacy;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -40,29 +41,27 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.android.gms.maps.OnMapReadyCallback;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback , LocationListener,GoogleMap.OnMarkerClickListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,GoogleMap.OnMarkerClickListener{
 
     private GoogleMap mMap;
     public static final int ROUND = 10;
-    public GoogleApiClient googleApiClient;
     private ChildEventListener mChildEventListener;
     private DatabaseReference mUsers;
     Marker marker;
     public FusedLocationProviderClient fusedLocationProviderClient;
     private DatabaseReference databaseReference;
     private FirebaseAuth firebaseAuth;
+    private TextView nama_apotik, alamat, jam, hari, lintang, bujur,jumlah_stock_dewasa,jumlah_stock_anak,harga_masker_anak, harga_masker_dewasa,total_harga;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         ChildEventListener mChildEventListener;
-        mUsers = FirebaseDatabase.getInstance().getReference("Apotik");
-        mUsers.push().setValue(marker);
+
     }
 
 
@@ -78,22 +77,25 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        mUsers = FirebaseDatabase.getInstance().getReference();
+        mUsers.push().setValue(marker);
+
+
         // Add a marker and move the camera
-        googleMap.setOnMarkerClickListener(this);
-        googleMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
-        /*final String getNama = getIntent().getExtras().getString("nama");
-        final String jam = getIntent().getExtras().getString("jam");
-        final int getJumlahDewasa = getIntent().getExtras().getInt("stock_dewasa");
-        final int getJumlahAnak = getIntent().getExtras().getInt("stock_anak");
-        final int getHargaDewasa = getIntent().getExtras().getInt("harga_dewasa");
-        final int getHargaAnak = getIntent().getExtras().getInt("harga_anak");*/
-        mUsers.addListenerForSingleValueEvent(new ValueEventListener() {
+        mUsers.child("Apotik").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                LatLng sydney = new LatLng(-33.852, 151.211);
+                mMap.addMarker(new MarkerOptions().position(sydney)
+                        .title("Marker in Sydney"));
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
                 for (DataSnapshot s : dataSnapshot.getChildren()) {
                     Pharmacy user = s.getValue(Pharmacy.class);
+                    user.setKey(dataSnapshot.getKey());
+
                     LatLng location = new LatLng(user.bujur, user.lintang);
-                    mMap.addMarker(new MarkerOptions().position(location).title(user.nama).snippet("Jam Buka Apotik : " + user.jam + "\n" + "Alamat : " + user.alamat + "\n" + "Sisa Masker anak : " + user.stock_anak + "\n" + "Sisa Masker dewasa : " + user.stock_dewasa));
+                    mMap.addMarker(new MarkerOptions().position(location).title(user.nama).snippet("Jam Buka Apotik : " + user.jam + "\n" + "Alamat : " + user.alamat + "\n"
+                            + "Sisa Masker anak : " + user.stock_anak + "\n" + "Sisa Masker dewasa : " + user.stock_dewasa));
                     mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
                         @Override
                         public View getInfoWindow(Marker arg0) {
@@ -137,6 +139,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                     });
                 }
+                getData();
             }
 
             @Override
@@ -144,56 +147,26 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             }
         });
-    }
-
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        googleApiClient.connect();              //establishment of google api client connection
-    }
-
-    @Override
-    protected void onStop() {
-        if (googleApiClient.isConnected()) {
-            googleApiClient.disconnect();       //discarding the google api client service if the activity is in onStop condition
-        }
-        super.onStop();
-    }
-
-    @Override
-    public void onLocationChanged(Location location) {
 
     }
 
-    @Override
-    public void onStatusChanged(String s, int i, Bundle bundle) {
 
-    }
 
-    @Override
-    public void onProviderEnabled(String s) {
+    private void getData(){
+        final String getNama = getIntent().getExtras().getString("nama");
+        final String getJam = getIntent().getExtras().getString("jam");
+        final int getJumlahDewasa = getIntent().getExtras().getInt("stock_dewasa");
+        final int getJumlahAnak = getIntent().getExtras().getInt("stock_anak");
+        final int getHargaDewasa = getIntent().getExtras().getInt("harga_dewasa");
+        final int getHargaAnak = getIntent().getExtras().getInt("harga_anak");
+        final double getLintang = getIntent().getExtras().getInt("lintang");
+        final double getBujur = getIntent().getExtras().getInt("bujur");
 
-    }
-
-    @Override
-    public void onProviderDisabled(String s) {
-
-    }
-
-    @Override
-    public void onConnected(@Nullable Bundle bundle) {
-
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-
-    }
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
+        nama_apotik.setText(getNama);
+        jumlah_stock_dewasa.setText(" Tersedia " + String.valueOf(getJumlahDewasa) +" masker ");
+        jumlah_stock_anak.setText(" Tersedia " + String.valueOf(getJumlahAnak) +" masker ");
+        harga_masker_dewasa.setText(" - Rp." + String.valueOf(getHargaDewasa) + "/masker");
+        harga_masker_anak.setText(" - Rp." + String.valueOf(getHargaAnak) + "/masker");
     }
 
     @Override

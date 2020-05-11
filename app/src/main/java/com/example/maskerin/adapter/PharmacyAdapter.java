@@ -48,9 +48,6 @@ public class PharmacyAdapter extends RecyclerView.Adapter<PharmacyAdapter.MyView
             harga_anak=itemView.findViewById(R.id.tv_harga_anak);
             harga_dewasa=itemView.findViewById(R.id.tv_harga_dewasa);
             ListItem = itemView.findViewById(R.id.list_item2);
-
-
-
         }
     }
 
@@ -72,7 +69,6 @@ public class PharmacyAdapter extends RecyclerView.Adapter<PharmacyAdapter.MyView
         int harga_anak=listApotik.get(position).getHarga_anak();
         String hari = listApotik.get(position).getHari();
         String jam = listApotik.get(position).getJam();
-
 
         holder.nama.setText(nama);
         holder.alamat.setText(alamat);

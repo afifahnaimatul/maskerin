@@ -13,9 +13,6 @@ public class Pengguna {
         this.nik=nik;
     }
 
-
-
-
     public String getNama() {
         return nama;
     }

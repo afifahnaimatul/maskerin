@@ -56,6 +56,7 @@ public class EditProfileActivity extends AppCompatActivity {
                 etNama.setText(userProfile.getNama());
                 etNik.setText(userProfile.getNik());
                 etEmail.setText(userProfile.getEmail());
+
                 //etPassword.setText(userProfile.getPassword);
             }
 
@@ -73,24 +74,22 @@ public class EditProfileActivity extends AppCompatActivity {
         String nik = etNik.getText().toString();
         String password = etPassword.getText().toString();
 
-        if (!TextUtils.isEmpty(nama) && !TextUtils.isEmpty(email) &&
-                !TextUtils.isEmpty(nik) && !TextUtils.isEmpty(password)){
-            Pengguna pengguna = new Pengguna(email, nama, nik);
-            //user update name gada?
-            user.updateEmail(email);
-            user.updatePassword(password);
-
-            updateItem(pengguna);
-        } else {
-            Toast.makeText(this, "Failed to update", Toast.LENGTH_LONG).show();
-        }
-    }
-
-    public void updateItem(Pengguna pengguna){
+        Pengguna pengguna = new Pengguna(email, nama, nik);
+        //user update name gada?
+        user.updateEmail(email);
         databaseReference.setValue(pengguna);
+        if(!etPassword.getText().toString().isEmpty()){
+            //user update name gada?
+            user.updatePassword(password);
+        }
 
-        Intent resultIntent = new Intent();
-        setResult(RESULT_OK, resultIntent);
-        finish();
+            Intent resultIntent = new Intent();
+            setResult(RESULT_OK, resultIntent);
+            finish();
+
+
+
+
     }
+
 }

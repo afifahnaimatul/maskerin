@@ -14,4 +14,6 @@
     <string name="title_activity_maps">Map</string>
     <string name="minimum_password">Masukkan minimal 6 karakter</string>
 
+    <string name="minimal_beli">Pembelian Maksimal 3 Masker</string>
+
 </resources>

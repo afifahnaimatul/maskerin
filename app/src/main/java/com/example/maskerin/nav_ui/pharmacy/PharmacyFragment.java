@@ -82,7 +82,7 @@ public class PharmacyFragment extends Fragment {
                     //Mapping data pada DataSnapshot ke dalam objek mahasiswa
                     Pharmacy apotik = snapshot.getValue(Pharmacy.class);
                     //Mengambil Primary Key, digunakan untuk proses Update dan Delete
-                    apotik.setKey(dataSnapshot.getKey());
+                    apotik.setKey(snapshot.getKey());
                     dataApotik.add(apotik);
                 }
 

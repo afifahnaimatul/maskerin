@@ -14,22 +14,14 @@
         android:padding="16dp">
 
         <TextView
-            android:id="@+id/tv_pharmacy"
+            android:id="@+id/tv_nama_apotik"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Apotek Serba Guna"
             android:textSize="32sp"
             android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/tv_info_address"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:text="Jalan Suka Jaya Udah Pasti Suka Gitu Deh Seru Ga Si Alamatnya Hehe Hohoho Ulala"
-            android:textSize="12sp" />
-
-<!--        name-->
+        <!--        name-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -44,7 +36,7 @@
                 android:textAllCaps="true" />
 
             <TextView
-                android:id="@+id/tv_content_name"
+                android:id="@+id/tv_nama_pengguna"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
@@ -53,35 +45,7 @@
                 android:textStyle="bold"/>
         </LinearLayout>
 
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="1dp"
-            android:alpha="0.2"
-            android:background="@color/grey"/>
-
-<!--        nik-->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:paddingVertical="16dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="NIK"
-                android:textSize="10sp"
-                android:textAllCaps="true" />
-
-            <TextView
-                android:id="@+id/tv_content_nik"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:text="1234567890"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-        </LinearLayout>
+        <!--        nik-->
 
         <View
             android:layout_width="fill_parent"
@@ -104,7 +68,7 @@
                 android:textAllCaps="true" />
 
             <TextView
-                android:id="@+id/tv_content_date"
+                android:id="@+id/tv_tanggal_beli"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
@@ -129,12 +93,12 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Jenis Masekr"
-                android:textSize="10sp"
-                android:textAllCaps="true" />
+                android:text="Jumlah Pembelian Masker Dewasa"
+                android:textAllCaps="true"
+                android:textSize="10sp" />
 
             <TextView
-                android:id="@+id/tv_content_type"
+                android:id="@+id/tv_jumlah_dewasa"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
@@ -159,16 +123,16 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Jumlah Item yang Dibeli"
-                android:textSize="10sp"
-                android:textAllCaps="true" />
+                android:text="Jumlah pembelian masker anak"
+                android:textAllCaps="true"
+                android:textSize="10sp" />
 
             <TextView
-                android:id="@+id/tv_content_total_item"
+                android:id="@+id/tv_jumlah_anak"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="1000 buah"
+                android:text="Anak"
                 android:textSize="16sp"
                 android:textStyle="bold" />
         </LinearLayout>
@@ -189,12 +153,12 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Harga Satuan"
-                android:textSize="10sp"
-                android:textAllCaps="true" />
+                android:text="Toal Pembayaran"
+                android:textAllCaps="true"
+                android:textSize="10sp" />
 
             <TextView
-                android:id="@+id/tv_content_prize"
+                android:id="@+id/tv_info_total_pembayaran"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
@@ -210,28 +174,6 @@
             android:background="@color/grey"/>
 
 <!--        total prize-->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:paddingVertical="16dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Total"
-                android:textSize="10sp"
-                android:textAllCaps="true" />
-
-            <TextView
-                android:id="@+id/tv_content_total_prize"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:text="Rp. 100000000"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-        </LinearLayout>
 
         <View
             android:layout_width="fill_parent"
