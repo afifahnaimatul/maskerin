@@ -38,17 +38,30 @@
                 android:id="@+id/tv_tanggal_pembelian"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="22dp"
                 android:text="TextView"
+                android:textSize="10sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/tv_order_nama_apotik" />
+                app:layout_constraintTop_toBottomOf="@id/tv_order_nama_apotik"/>
+
+
+            <TextView
+                android:id="@+id/total"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Total : "
+                app:layout_constraintTop_toBottomOf="@id/tv_tanggal_pembelian"
+                app:layout_constraintStart_toStartOf="parent"/>
 
             <TextView
                 android:id="@+id/tv_total"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="TextView"
-                app:layout_constraintStart_toStartOf="parent"
+                android:textColor="#2962ff"
+                android:layout_marginTop="4dp"
+                android:layout_marginStart="8dp"
+                app:layout_constraintStart_toEndOf="@id/total"
                 app:layout_constraintTop_toBottomOf="@+id/tv_tanggal_pembelian" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
