@@ -32,11 +32,13 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class PemesananActivity extends AppCompatActivity {
-    private TextView nama_apotik,jumlah_stock_dewasa,jumlah_stock_anak,harga_masker_anak, harga_masker_dewasa,total_harga;
+    private TextView nama_apotik,jumlah_stock_dewasa,jumlah_stock_anak,harga_masker_anak, harga_masker_dewasa,total_harga, bolehpesan;
     private EditText jumlah_dewasa,jumlah_anak;
     private int jumlahDewasa, jumlahAnak;
-    private String strDate;
+    private String strDate = "00/05/0000", getId_pengguna, getId_apotik;
+    private String lastOrder = "08/05/0000";
     private DatabaseReference databaseReference;
+    private Button button_pesan_masker;
 
     private FirebaseDatabase firebaseDatabase;
     private FirebaseAuth firebaseAuth;
@@ -51,6 +53,8 @@ public class PemesananActivity extends AppCompatActivity {
         jumlah_stock_anak=findViewById(R.id.tv_jumlah_stock_anak);
         harga_masker_dewasa=findViewById(R.id.tv_harga_dewasa);
         harga_masker_anak=findViewById(R.id.tv_harga_anak);
+        button_pesan_masker = findViewById(R.id.btn_pesan_masker);
+        bolehpesan = findViewById(R.id.bolehpesan);
 
         total_harga=findViewById(R.id.tv_total_harga_angka);
         jumlah_dewasa=findViewById(R.id.et_jumlah_dewasa);
@@ -60,6 +64,7 @@ public class PemesananActivity extends AppCompatActivity {
         jumlah_anak.setFilters(new InputFilter[]{ new InputFilterMinMax("0", "3")});
 
         getData();
+        //setButtonOn();
 
         jumlah_dewasa.addTextChangedListener(new TextWatcher() {
 
@@ -153,16 +158,37 @@ public class PemesananActivity extends AppCompatActivity {
                 final int total = harga_dewasa + harga_anak ;
                 total_harga.setText(String.valueOf(total));
             }
-
         });
-
     }
 
-//    public boolean constraintSevenDays(){
-//        String arr[] = strDate.split("/");
-//        if
-//        return true;
-//    }
+    private void setButtonOn() {
+        if (isCanOrder()){
+            button_pesan_masker.setEnabled(true);
+        } else{
+            button_pesan_masker.setEnabled(false);
+            bolehpesan.setVisibility(View.VISIBLE);
+            bolehpesan.setText("* Anda hanya diperbolehkan memesan sebanyak satu kali dalam 7 hari");
+        }
+    }
+
+    public boolean isCanOrder(){
+        String newOrder[] = strDate.split("/");
+        String lasOrder[] = lastOrder.split("/");
+
+        boolean output = true;
+
+        if(Integer.parseInt(newOrder[1]) - Integer.parseInt(lasOrder[1]) == 0 ){
+            int delta = Integer.parseInt(newOrder[0]) - Integer.parseInt(lasOrder[0]);
+            if (delta < 7){
+                output = false;
+            } else {
+                output = true;
+            }
+        } else if (Integer.parseInt(newOrder[0]) > 7) {
+            output = true;
+        }
+        return output;
+    }
 
     private void getData(){
 
@@ -195,9 +221,9 @@ public class PemesananActivity extends AppCompatActivity {
 
         firebaseAuth = FirebaseAuth.getInstance();
         user = FirebaseAuth.getInstance().getCurrentUser();
-        final String getId_pengguna = user.getUid();
+        getId_pengguna = user.getUid();
 
-        final String getId_apotik = getIntent().getExtras().getString("id_apotik");
+        getId_apotik = getIntent().getExtras().getString("id_apotik");
 
 //        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
@@ -219,6 +245,7 @@ public class PemesananActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<Void> task) {
 
                 if (task.isSuccessful()) {
+                    lastOrder = "12/05/2020";
                     int stock_anak = getJumlahAnak-jumlahAnak;
                     int stock_dewasa = getJumlahDewasa - jumlahDewasa;
                     firebaseDatabase.getInstance().getReference("Apotik").child(getId_apotik).child("stock_anak").setValue(stock_anak);
@@ -236,4 +263,10 @@ public class PemesananActivity extends AppCompatActivity {
         });
 
     }
+
+//    String str = "sdf";
+//
+//    public void setLastDate(){
+//        FirebaseDatabase.getInstance().getReference("Pengguna").child(getId_pengguna).push().setValue()
+//    }
 }

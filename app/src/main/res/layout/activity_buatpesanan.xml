@@ -169,6 +169,18 @@
         app:layout_constraintStart_toEndOf="@id/tv_rp"
         app:layout_constraintTop_toBottomOf="@+id/material_et_jumlah_anak" />
 
+    <TextView
+        android:id="@+id/bolehpesan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:textSize="12sp"
+        android:layout_marginTop="8dp"
+        android:textColor="#FF0000"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/tv_total_harga_angka"
+        app:layout_constraintStart_toStartOf="parent"/>
+
     <Button
         android:id="@+id/btn_pesan_masker"
         android:layout_width="match_parent"
@@ -176,7 +188,7 @@
         android:onClick="PesanOnClick"
         android:text="Pesan"
         android:textSize="14sp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="28dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_total_harga_angka" />
 
