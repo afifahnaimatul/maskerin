@@ -12,6 +12,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.maskerin.class_object.History;
+import com.example.maskerin.class_object.Pharmacy;
+import com.example.maskerin.nav_ui.history.HistoryFragment;
+import com.example.maskerin.nav_ui.pharmacy.PharmacyFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -61,7 +64,6 @@ public class PemesananActivity extends AppCompatActivity {
 
     private void TextChangeListener(EditText editText){
         editText.addTextChangedListener(new TextWatcher() {
-
             public void afterTextChanged(Editable s) {
             }
 
@@ -120,10 +122,6 @@ public class PemesananActivity extends AppCompatActivity {
         harga_masker_anak.setText(" @ Rp." + String.valueOf(getHargaAnak));
     }
 
-    public void auth(){
-
-    }
-
     public void PesanOnClick (View view) {
         final int jumlah_input_dewasa =  Integer.parseInt(jumlah_dewasa.getText().toString().trim());
         final int jumlah_input_anak = Integer.parseInt(jumlah_anak.getText().toString().trim());
@@ -133,7 +131,6 @@ public class PemesananActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         user = FirebaseAuth.getInstance().getCurrentUser();
         final String getId_pengguna = user.getUid();
-
 
         final String getId_apotik = getIntent().getExtras().getString("id_apotik");
 

@@ -93,5 +93,25 @@ public class Pharmacy {
     public void setKey(String key) {
         this.key = key;
     }
+
+    public void setHarga_anak(int harga_anak) {
+        this.harga_anak = harga_anak;
+    }
+
+    public Double getBujur() {
+        return bujur;
+    }
+
+    public void setBujur(Double bujur) {
+        this.bujur = bujur;
+    }
+
+    public Double getLintang() {
+        return lintang;
+    }
+
+    public void setLintang(Double lintang) {
+        this.lintang = lintang;
+    }
 }
 
