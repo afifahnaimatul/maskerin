@@ -35,7 +35,7 @@
         android:id="@+id/material_et_nama"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:layout_marginTop="34dp"
+        android:layout_marginTop="30dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/title_maskerin"
@@ -83,7 +83,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/attribute_email"
-            android:inputType="number" />
+            android:inputType="textEmailAddress" />
 
     </com.google.android.material.textfield.TextInputLayout>
 

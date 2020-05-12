@@ -28,9 +28,9 @@
                 android:id="@+id/tv_order_nama_apotik"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-black"
                 android:text="TextView"
-                android:textSize="18sp"
+                android:textSize="14sp"
+                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -50,6 +50,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:text="Total : "
+                android:textSize="12sp"
                 app:layout_constraintTop_toBottomOf="@id/tv_tanggal_pembelian"
                 app:layout_constraintStart_toStartOf="parent"/>
 
@@ -59,6 +60,7 @@
                 android:layout_height="wrap_content"
                 android:text="TextView"
                 android:textColor="#2962ff"
+                android:textSize="12sp"
                 android:layout_marginTop="4dp"
                 android:layout_marginStart="8dp"
                 app:layout_constraintStart_toEndOf="@id/total"

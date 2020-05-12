@@ -44,25 +44,43 @@
                 app:layout_constraintTop_toBottomOf="@+id/tv_name" />
 
             <TextView
-                android:id="@+id/tv_item_name"
+                android:id="@+id/tv_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-condensed-medium"
-                android:text="Masker Anak      : "
-                android:textColor="#FF9800"
-                android:textSize="12sp"
+                android:text="TextView"
+                android:textSize="10sp"
+                android:layout_marginTop="4dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_item_name2" />
+                app:layout_constraintTop_toBottomOf="@+id/tv_address" />
+
+            <TextView
+                android:id="@+id/tv_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="TextView"
+                android:textSize="10sp"
+                app:layout_constraintStart_toEndOf="@+id/tv_date"
+                app:layout_constraintTop_toBottomOf="@+id/tv_address" />
+
+            <TextView
+                android:id="@+id/masker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Masker"
+                android:textSize="12sp"
+                app:layout_constraintTop_toBottomOf="@id/tv_date"
+                app:layout_constraintStart_toStartOf="parent"/>
 
             <TextView
                 android:id="@+id/tv_item_name2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-condensed-medium"
-                android:text="Masker Dewasa : "
+                android:text="Dewasa : "
                 android:textColor="#3F51B5"
                 android:textSize="12sp"
-                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="16dp"
+                app:layout_constraintStart_toEndOf="@id/masker"
                 app:layout_constraintTop_toBottomOf="@+id/tv_date" />
 
             <TextView
@@ -72,6 +90,7 @@
                 android:text="TextView"
                 android:textColor="#3F51B5"
                 android:textSize="12sp"
+                android:textStyle="bold"
                 app:layout_constraintStart_toEndOf="@+id/tv_item_name2"
                 app:layout_constraintTop_toBottomOf="@+id/tv_date" />
 
@@ -82,18 +101,20 @@
                 android:text="TextView"
                 android:textColor="#3F51B5"
                 android:textSize="12sp"
+                android:visibility="gone"
                 app:layout_constraintStart_toEndOf="@+id/tv_stock_dewasa"
                 app:layout_constraintTop_toBottomOf="@+id/tv_date" />
 
             <TextView
-                android:id="@+id/tv_harga_anak"
+                android:id="@+id/tv_item_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="TextView"
+                android:layout_marginStart="16dp"
+                android:text="Anak : "
                 android:textColor="#FF9800"
                 android:textSize="12sp"
-                app:layout_constraintStart_toEndOf="@+id/tv_stock_anak"
-                app:layout_constraintTop_toBottomOf="@+id/tv_item_name2" />
+                app:layout_constraintStart_toEndOf="@id/tv_stock_dewasa"
+                app:layout_constraintTop_toBottomOf="@+id/tv_date" />
 
             <TextView
                 android:id="@+id/tv_stock_anak"
@@ -102,26 +123,20 @@
                 android:text="TextView"
                 android:textColor="#FF9800"
                 android:textSize="12sp"
+                android:textStyle="bold"
                 app:layout_constraintStart_toEndOf="@+id/tv_item_name"
+                app:layout_constraintTop_toTopOf="@+id/tv_stock_dewasa" />
+
+            <TextView
+                android:id="@+id/tv_harga_anak"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:textColor="#FF9800"
+                android:textSize="12sp"
+                android:visibility="gone"
+                app:layout_constraintStart_toEndOf="@+id/tv_stock_anak"
                 app:layout_constraintTop_toBottomOf="@+id/tv_item_name2" />
-
-            <TextView
-                android:id="@+id/tv_date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="TextView"
-                android:textSize="10sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_address" />
-
-            <TextView
-                android:id="@+id/tv_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="TextView"
-                android:textSize="10sp"
-                app:layout_constraintStart_toEndOf="@+id/tv_date"
-                app:layout_constraintTop_toBottomOf="@+id/tv_address" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

@@ -34,14 +34,13 @@ import java.util.Date;
 public class PemesananActivity extends AppCompatActivity {
     private TextView nama_apotik,jumlah_stock_dewasa,jumlah_stock_anak,harga_masker_anak, harga_masker_dewasa,total_harga;
     private EditText jumlah_dewasa,jumlah_anak;
+    private int jumlahDewasa, jumlahAnak;
+    private String strDate;
     private DatabaseReference databaseReference;
 
     private FirebaseDatabase firebaseDatabase;
     private FirebaseAuth firebaseAuth;
     private FirebaseUser user;
-
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,12 +56,10 @@ public class PemesananActivity extends AppCompatActivity {
         jumlah_dewasa=findViewById(R.id.et_jumlah_dewasa);
         jumlah_anak=findViewById(R.id.et_jumlah_anak);
 
-
         jumlah_dewasa.setFilters(new InputFilter[]{ new InputFilterMinMax("0", "3")});
         jumlah_anak.setFilters(new InputFilter[]{ new InputFilterMinMax("0", "3")});
 
         getData();
-
 
         jumlah_dewasa.addTextChangedListener(new TextWatcher() {
 
@@ -89,14 +86,18 @@ public class PemesananActivity extends AppCompatActivity {
 
                 if(jumlah_input_dewasa.isEmpty() ){
                     masker_dewasa=0;
+                    jumlahDewasa = 0;
                 }else{
                     masker_dewasa = Integer.parseInt(jumlah_input_dewasa);
+                    jumlahDewasa = masker_dewasa;
                 }
 
                 if( jumlah_input_anak.isEmpty()){
                     masker_anak=0;
+                    jumlahAnak = 0;
                 }else{
                     masker_anak = Integer.parseInt(jumlah_input_anak);
+                    jumlahAnak = masker_anak;
                 }
 
                 final int harga_dewasa= masker_dewasa * getHargaDewasa;
@@ -133,14 +134,18 @@ public class PemesananActivity extends AppCompatActivity {
 
                 if(jumlah_input_dewasa.isEmpty() ){
                     masker_dewasa=0;
+                    jumlahDewasa = 0;
                 }else{
                     masker_dewasa = Integer.parseInt(jumlah_input_dewasa);
+                    jumlahDewasa = masker_dewasa;
                 }
 
                 if( jumlah_input_anak.isEmpty()){
                     masker_anak=0;
+                    jumlahAnak = 0;
                 }else{
                     masker_anak = Integer.parseInt(jumlah_input_anak);
+                    jumlahAnak = masker_anak;
                 }
 
                 final int harga_dewasa= masker_dewasa * getHargaDewasa;
@@ -151,8 +156,13 @@ public class PemesananActivity extends AppCompatActivity {
 
         });
 
-
     }
+
+//    public boolean constraintSevenDays(){
+//        String arr[] = strDate.split("/");
+//        if
+//        return true;
+//    }
 
     private void getData(){
 
@@ -180,8 +190,6 @@ public class PemesananActivity extends AppCompatActivity {
         nama_apotik=findViewById(R.id.tvNamaApotik);
         final int getJumlahDewasa= Integer.parseInt(jumlah_stock_dewasa.getText().toString().trim());
         final int getJumlahAnak= Integer.parseInt(jumlah_stock_anak.getText().toString().trim());
-        final int jumlah_input_dewasa =  Integer.parseInt(jumlah_dewasa.getText().toString().trim());
-        final int jumlah_input_anak = Integer.parseInt(jumlah_anak.getText().toString().trim());
         final String namaApotik= nama_apotik.getText().toString().trim();
         int total = Integer.parseInt(total_harga.getText().toString().trim());
 
@@ -191,17 +199,18 @@ public class PemesananActivity extends AppCompatActivity {
 
         final String getId_apotik = getIntent().getExtras().getString("id_apotik");
 
-        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+//        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         Date date = new Date();
-        String strDate = dateFormat.format(date);
+        strDate = dateFormat.format(date);
 
         final History pesanan = new History(
                 getId_apotik,
                 namaApotik,
                 getId_pengguna,
                 strDate,
-                jumlah_input_dewasa,
-                jumlah_input_anak,
+                jumlahDewasa,
+                jumlahDewasa,
                 total
         );
 
@@ -210,8 +219,8 @@ public class PemesananActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<Void> task) {
 
                 if (task.isSuccessful()) {
-                    int stock_anak = getJumlahAnak-jumlah_input_anak;
-                    int stock_dewasa = getJumlahDewasa - jumlah_input_dewasa;
+                    int stock_anak = getJumlahAnak-jumlahAnak;
+                    int stock_dewasa = getJumlahDewasa - jumlahDewasa;
                     firebaseDatabase.getInstance().getReference("Apotik").child(getId_apotik).child("stock_anak").setValue(stock_anak);
                     firebaseDatabase.getInstance().getReference("Apotik").child(getId_apotik).child("stock_dewasa").setValue(stock_dewasa);
 
