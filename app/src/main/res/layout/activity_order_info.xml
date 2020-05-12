@@ -175,19 +175,22 @@
 
 <!--        total prize-->
 
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="1dp"
-            android:alpha="0.2"
-            android:background="@color/grey"/>
-
         <TextView
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_marginVertical="32dp"
-            android:text="Nanti di sini isinya barcode abal-abal"
-            android:layout_gravity="center"/>
+            android:text="Tunjukkan QR Code di bawah kepada pelayan apotek" />
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/qr_code"
+            android:layout_marginBottom="48dp"/>
+
+
     </LinearLayout>
 
 

@@ -59,8 +59,8 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.MyViewHo
         int totalPembelian = histories.get(position).getTotal_harga();
 
         holder.namaApotik.setText(namaApotik);
-        holder.tanggalPembelian.setText("Tanggal Pembelian : " + tanggalPembelian);
-        holder.totalPembelian.setText(String.valueOf("Total Pembayaran : Rp." + totalPembelian));
+        holder.tanggalPembelian.setText(tanggalPembelian);
+        holder.totalPembelian.setText(String.valueOf("Rp. " + totalPembelian));
 
         holder.ListItem2.setOnClickListener(new View.OnClickListener() {
             @Override
