@@ -139,7 +139,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                     });
                 }
-                getData();
+                //getData();
             }
 
             @Override
@@ -165,8 +165,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         nama_apotik.setText(getNama);
         jumlah_stock_dewasa.setText(" Tersedia " + String.valueOf(getJumlahDewasa) +" masker ");
         jumlah_stock_anak.setText(" Tersedia " + String.valueOf(getJumlahAnak) +" masker ");
-        harga_masker_dewasa.setText(" - Rp." + String.valueOf(getHargaDewasa) + "/masker");
-        harga_masker_anak.setText(" - Rp." + String.valueOf(getHargaAnak) + "/masker");
+        harga_masker_dewasa.setText(" - Rp. " + String.valueOf(getHargaDewasa) + "/masker");
+        harga_masker_anak.setText(" - Rp. " + String.valueOf(getHargaAnak) + "/masker");
     }
 
     @Override

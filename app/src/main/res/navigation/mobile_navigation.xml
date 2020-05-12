@@ -15,7 +15,12 @@
         android:id="@+id/navigation_pharmacy"
         android:name="com.example.maskerin.nav_ui.pharmacy.PharmacyFragment"
         android:label="@string/title_pharmacy"
-        tools:layout="@layout/fragment_pharmacy" />
+        tools:layout="@layout/fragment_pharmacy" >
+
+        <action
+            android:id="@+id/action_to_next_fragment"
+            app:destination="@id/navigation_history" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_profile"

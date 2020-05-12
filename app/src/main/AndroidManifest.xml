@@ -29,8 +29,13 @@
         <activity
             android:name=".OrderInfoActivity"
             android:label="Detail Pemesanan"
-            android:parentActivityName=".MainActivity"></activity>
-        <activity android:name=".PemesananActivity" />
+            android:parentActivityName=".MainActivity">
+        </activity>
+
+        <activity
+            android:name=".PemesananActivity"
+            android:label="Buat Pesanan">
+        </activity>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
