@@ -83,11 +83,11 @@ public class PharmacyAdapter extends RecyclerView.Adapter<PharmacyAdapter.MyView
             @Override
             public void onClick( final View v) {
                 Bundle bundle = new Bundle();
-                bundle.putString("nama", listApotik.get(position).getNama());
-                bundle.putInt("stock_dewasa", listApotik.get(position).getStock_dewasa());
-                bundle.putInt("stock_anak", listApotik.get(position).getStock_anak());
-                bundle.putInt("harga_dewasa", listApotik.get(position).getHarga_dewasa());
-                bundle.putInt("harga_anak", listApotik.get(position).getHarga_anak());
+//                bundle.putString("nama", listApotik.get(position).getNama());
+//                bundle.putInt("stock_dewasa", listApotik.get(position).getStock_dewasa());
+//                bundle.putInt("stock_anak", listApotik.get(position).getStock_anak());
+//                bundle.putInt("harga_dewasa", listApotik.get(position).getHarga_dewasa());
+//                bundle.putInt("harga_anak", listApotik.get(position).getHarga_anak());
                 bundle.putString("id_apotik", listApotik.get(position).getKey());
                 Intent intent = new Intent(v.getContext(), PemesananActivity.class);
                 intent.putExtras(bundle);

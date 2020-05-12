@@ -41,6 +41,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.android.gms.maps.OnMapReadyCallback;
 
+import java.util.ArrayList;
+
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,GoogleMap.OnMarkerClickListener{
 
     private GoogleMap mMap;
@@ -51,6 +53,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public FusedLocationProviderClient fusedLocationProviderClient;
     private DatabaseReference databaseReference;
     private FirebaseAuth firebaseAuth;
+
+    private ArrayList<Pharmacy> dataApotik;
+
     private TextView nama_apotik, alamat, jam, hari, lintang, bujur,jumlah_stock_dewasa,jumlah_stock_anak,harga_masker_anak, harga_masker_dewasa,total_harga;
 
     @Override
@@ -77,25 +82,37 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        mUsers = FirebaseDatabase.getInstance().getReference();
-        mUsers.push().setValue(marker);
+        googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+//        mUsers = FirebaseDatabase.getInstance().getReference();
+//        mUsers.push().setValue(marker);
 
 
         // Add a marker and move the camera
-        mUsers.child("Apotik").addListenerForSingleValueEvent(new ValueEventListener() {
+            FirebaseDatabase.getInstance().getReference().child("Apotik").addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                LatLng sydney = new LatLng(-33.852, 151.211);
-                mMap.addMarker(new MarkerOptions().position(sydney)
-                        .title("Marker in Sydney"));
-                mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-                for (DataSnapshot s : dataSnapshot.getChildren()) {
-                    Pharmacy user = s.getValue(Pharmacy.class);
-                    user.setKey(dataSnapshot.getKey());
 
-                    LatLng location = new LatLng(user.bujur, user.lintang);
-                    mMap.addMarker(new MarkerOptions().position(location).title(user.nama).snippet("Jam Buka Apotik : " + user.jam + "\n" + "Alamat : " + user.alamat + "\n"
-                            + "Sisa Masker anak : " + user.stock_anak + "\n" + "Sisa Masker dewasa : " + user.stock_dewasa));
+            public void onDataChange(DataSnapshot dataSnapshot) {
+//                LatLng sydney = new LatLng(-33.852, 151.211);
+//                mMap.addMarker(new MarkerOptions().position(sydney)
+//                        .title("Marker in Sydney"));
+//                mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+                dataApotik = new ArrayList<>();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    //Mapping data pada DataSnapshot ke dalam objek mahasiswa
+                    Pharmacy apotik = snapshot.getValue(Pharmacy.class);
+                    //Mengambil Primary Key, digunakan untuk proses Update dan Delete
+                    apotik.setKey(snapshot.getKey());
+                    dataApotik.add(apotik);
+
+                    final LatLng location = new LatLng(apotik.getLintang(), apotik.getBujur());
+                    Marker marker = mMap.addMarker(new MarkerOptions().position(location).title(apotik.getNama()).snippet("Jam Buka Apotik : " + apotik.getJam() + "\n" + "Alamat : " + apotik.getAlamat() + "\n"
+                            + "Sisa Masker anak : " + apotik.getStock_anak() + "\n" + "Sisa Masker dewasa : " + apotik.getStock_dewasa()));
+                    marker.setTag(apotik.getKey());
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(location, 13));
+                    mMap.moveCamera(CameraUpdateFactory.newLatLng(location));
+
+                }
+
                     mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
                         @Override
                         public View getInfoWindow(Marker arg0) {
@@ -126,48 +143,34 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         }
 
                     });
-                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(location, 13));
-                    mMap.moveCamera(CameraUpdateFactory.newLatLng(location));
+
                     /**Untuk Klik ke Halaman selanjutnya*/
+
                     mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
                         @Override
-                        public void onInfoWindowClick(Marker arg0) {
+                        public void onInfoWindowClick(Marker marker) {
                             // call an activity(xml file)
-                            Intent I = new Intent(MapsActivity.this, PemesananActivity.class);
-                            startActivity(I);
+                            Intent intent = new Intent(MapsActivity.this, PemesananActivity.class);
+                            intent.putExtra("id_apotik",(String)marker.getTag());
+                            startActivity(intent);
+
                         }
 
                     });
                 }
-                getData();
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
 
-            }
+                }
+
+
+
         });
 
     }
 
 
-
-    private void getData(){
-        final String getNama = getIntent().getExtras().getString("nama");
-        final String getJam = getIntent().getExtras().getString("jam");
-        final int getJumlahDewasa = getIntent().getExtras().getInt("stock_dewasa");
-        final int getJumlahAnak = getIntent().getExtras().getInt("stock_anak");
-        final int getHargaDewasa = getIntent().getExtras().getInt("harga_dewasa");
-        final int getHargaAnak = getIntent().getExtras().getInt("harga_anak");
-        final double getLintang = getIntent().getExtras().getInt("lintang");
-        final double getBujur = getIntent().getExtras().getInt("bujur");
-
-        nama_apotik.setText(getNama);
-        jumlah_stock_dewasa.setText(" Tersedia " + String.valueOf(getJumlahDewasa) +" masker ");
-        jumlah_stock_anak.setText(" Tersedia " + String.valueOf(getJumlahAnak) +" masker ");
-        harga_masker_dewasa.setText(" - Rp." + String.valueOf(getHargaDewasa) + "/masker");
-        harga_masker_anak.setText(" - Rp." + String.valueOf(getHargaAnak) + "/masker");
-    }
 
     @Override
     public boolean onMarkerClick(Marker marker) {

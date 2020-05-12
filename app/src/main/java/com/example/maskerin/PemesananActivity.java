@@ -16,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.maskerin.class_object.History;
+import com.example.maskerin.class_object.Pharmacy;
 import com.example.maskerin.nav_ui.history.HistoryFragment;
 import com.example.maskerin.nav_ui.pharmacy.PharmacyFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -63,7 +64,7 @@ public class PemesananActivity extends AppCompatActivity {
         jumlah_dewasa.setFilters(new InputFilter[]{ new InputFilterMinMax("0", "3")});
         jumlah_anak.setFilters(new InputFilter[]{ new InputFilterMinMax("0", "3")});
 
-
+        getData();
 
 
         jumlah_dewasa.addTextChangedListener(new TextWatcher() {
@@ -79,8 +80,8 @@ public class PemesananActivity extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start,
                                       int before, int count) {
 
-                final int getHargaDewasa = getIntent().getExtras().getInt("harga_dewasa");
-                final int getHargaAnak = getIntent().getExtras().getInt("harga_anak");
+                final int getHargaDewasa = Integer.parseInt(harga_masker_dewasa.getText().toString().trim());
+                final int getHargaAnak = Integer.parseInt(harga_masker_anak.getText().toString().trim());
 
                 String jumlah_input_dewasa;
                 String jumlah_input_anak ;
@@ -123,9 +124,8 @@ public class PemesananActivity extends AppCompatActivity {
                                       int before, int count) {
 
 
-
-                final int getHargaDewasa = getIntent().getExtras().getInt("harga_dewasa");
-                final int getHargaAnak = getIntent().getExtras().getInt("harga_anak");
+                final int getHargaDewasa = Integer.parseInt(harga_masker_dewasa.getText().toString().trim());
+                final int getHargaAnak = Integer.parseInt(harga_masker_anak.getText().toString().trim());
 
                 String jumlah_input_dewasa;
                 String jumlah_input_anak ;
@@ -153,39 +153,61 @@ public class PemesananActivity extends AppCompatActivity {
             }
 
         });
-        getData();
+
 
     }
 
     private void getData(){
-        final String getNama = getIntent().getExtras().getString("nama");
-        final int getJumlahDewasa = getIntent().getExtras().getInt("stock_dewasa");
-        final int getJumlahAnak = getIntent().getExtras().getInt("stock_anak");
-        final int getHargaDewasa = getIntent().getExtras().getInt("harga_dewasa");
-        final int getHargaAnak = getIntent().getExtras().getInt("harga_anak");
 
-        nama_apotik.setText(getNama);
-        jumlah_stock_dewasa.setText(" Tersedia " + String.valueOf(getJumlahDewasa) +" masker ");
-        jumlah_stock_anak.setText(" Tersedia " + String.valueOf(getJumlahAnak) +" masker ");
-        harga_masker_dewasa.setText(" - Rp." + String.valueOf(getHargaDewasa) + "/masker");
-        harga_masker_anak.setText(" - Rp." + String.valueOf(getHargaAnak) + "/masker");
+        final String getId_apotik = getIntent().getExtras().getString("id_apotik");
 
+        FirebaseDatabase.getInstance().getReference("Apotik").child(getId_apotik).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Pharmacy apotik = dataSnapshot.getValue(Pharmacy.class);
+                nama_apotik.setText(apotik.getNama());
+                jumlah_stock_dewasa.setText(String.valueOf(apotik.getStock_dewasa()));
+                jumlah_stock_anak.setText( String.valueOf(apotik.getStock_anak()) );
+                harga_masker_dewasa.setText(String.valueOf(apotik.getHarga_dewasa()) );
+                harga_masker_anak.setText( String.valueOf(apotik.getHarga_anak()));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
+
+//        final String getNama = getIntent().getExtras().getString("nama");
+//        final int getJumlahDewasa = getIntent().getExtras().getInt("stock_dewasa");
+//        final int getJumlahAnak = getIntent().getExtras().getInt("stock_anak");
+//        final int getHargaDewasa = getIntent().getExtras().getInt("harga_dewasa");
+//        final int getHargaAnak = getIntent().getExtras().getInt("harga_anak");
+
+//        nama_apotik.setText(getNama);
+//        jumlah_stock_dewasa.setText(" Tersedia " + String.valueOf(getJumlahDewasa) +" masker ");
+//        jumlah_stock_anak.setText(" Tersedia " + String.valueOf(getJumlahAnak) +" masker ");
+//        harga_masker_dewasa.setText(" - Rp." + String.valueOf(getHargaDewasa) + "/masker");
+//        harga_masker_anak.setText(" - Rp." + String.valueOf(getHargaAnak) + "/masker");
+
+
 
     public void PesanOnClick (View view) {
         nama_apotik=findViewById(R.id.tvNamaApotik);
-        final int getJumlahDewasa = getIntent().getExtras().getInt("stock_dewasa");
-        final int getJumlahAnak = getIntent().getExtras().getInt("stock_anak");
+//        final int getJumlahDewasa = getIntent().getExtras().getInt("stock_dewasa");
+//        final int getJumlahAnak = getIntent().getExtras().getInt("stock_anak");
+        final int getJumlahDewasa= Integer.parseInt(jumlah_stock_dewasa.getText().toString().trim());
+        final int getJumlahAnak= Integer.parseInt(jumlah_stock_anak.getText().toString().trim());
         final int jumlah_input_dewasa =  Integer.parseInt(jumlah_dewasa.getText().toString().trim());
         final int jumlah_input_anak = Integer.parseInt(jumlah_anak.getText().toString().trim());
-        final String nama_apotik = getIntent().getExtras().getString("nama");
-
+        final String namaApotik= nama_apotik.getText().toString().trim();
+       // final String nama_apotik = getIntent().getExtras().getString("nama");
         int total = Integer.parseInt(total_harga.getText().toString().trim());
 
         firebaseAuth = FirebaseAuth.getInstance();
         user = FirebaseAuth.getInstance().getCurrentUser();
         final String getId_pengguna = user.getUid();
-
 
         final String getId_apotik = getIntent().getExtras().getString("id_apotik");
 
@@ -195,7 +217,7 @@ public class PemesananActivity extends AppCompatActivity {
 
         final History pesanan = new History(
                 getId_apotik,
-                nama_apotik,
+                namaApotik,
                 getId_pengguna,
                 strDate,
                 jumlah_input_dewasa,
