@@ -53,9 +53,6 @@ public class HistoryFragment extends Fragment {
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase firebaseDatabase;
     private FirebaseUser user;
- //   private String GetUserID;
-
-    boolean check_ScrollingUp = false;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -69,7 +66,6 @@ public class HistoryFragment extends Fragment {
         loading.setVisibility(View.VISIBLE);
 
         GetData();
-        //scrollListener();
         return root;
     }
     private void GetData(){
@@ -101,32 +97,6 @@ public class HistoryFragment extends Fragment {
             }
         });
     }
-
-//    public void scrollListener(){
-//        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-//
-//            @Override
-//            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-//                super.onScrolled(recyclerView, dx, dy);
-//                if (dy > 0){
-//                    if(check_ScrollingUp){
-//                        button.startAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.trans_downwards));
-//                        check_ScrollingUp = false;
-//                    }
-//                } else {
-//                    if(!check_ScrollingUp){
-//                        button.startAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.trans_upwards));
-//                        check_ScrollingUp = true;
-//                    }
-//                }
-//            }
-//
-//            @Override
-//            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-//                super.onScrollStateChanged(recyclerView, newState);
-//            }
-//        });
-//    }
 
     public void onCreate(@Nullable Bundle savedInstanceState){
         setHasOptionsMenu(true);

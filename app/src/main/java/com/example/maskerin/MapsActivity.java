@@ -163,11 +163,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 public void onCancelled(@NonNull DatabaseError databaseError) {
 
                 }
+                //getData();
+            });
 
-
-
-        });
-
+//        nama_apotik.setText(getNama);
+//        jumlah_stock_dewasa.setText(" Tersedia " + String.valueOf(getJumlahDewasa) +" masker ");
+//        jumlah_stock_anak.setText(" Tersedia " + String.valueOf(getJumlahAnak) +" masker ");
+//        harga_masker_dewasa.setText(" - Rp. " + String.valueOf(getHargaDewasa) + "/masker");
+//        harga_masker_anak.setText(" - Rp. " + String.valueOf(getHargaAnak) + "/masker");
     }
 
 
