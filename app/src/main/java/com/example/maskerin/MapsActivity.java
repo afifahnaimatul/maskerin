@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
@@ -12,6 +14,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -41,9 +44,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.android.gms.maps.OnMapReadyCallback;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,GoogleMap.OnMarkerClickListener{
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback{
 
     private GoogleMap mMap;
     public static final int ROUND = 10;
@@ -53,6 +58,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public FusedLocationProviderClient fusedLocationProviderClient;
     private DatabaseReference databaseReference;
     private FirebaseAuth firebaseAuth;
+    SearchView searchView;
 
     private ArrayList<Pharmacy> dataApotik;
 
@@ -62,44 +68,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+        searchView = findViewById(R.id.sv_location);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        ChildEventListener mChildEventListener;
-
     }
 
-
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-//        mUsers = FirebaseDatabase.getInstance().getReference();
-//        mUsers.push().setValue(marker);
-
-
-        // Add a marker and move the camera
-            FirebaseDatabase.getInstance().getReference().child("Apotik").addValueEventListener(new ValueEventListener() {
-            @Override
+        FirebaseDatabase.getInstance().getReference().child("Apotik").addValueEventListener(new ValueEventListener() {
 
             public void onDataChange(DataSnapshot dataSnapshot) {
-//                LatLng sydney = new LatLng(-33.852, 151.211);
-//                mMap.addMarker(new MarkerOptions().position(sydney)
-//                        .title("Marker in Sydney"));
-//                mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
                 dataApotik = new ArrayList<>();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    //Mapping data pada DataSnapshot ke dalam objek mahasiswa
-                    Pharmacy apotik = snapshot.getValue(Pharmacy.class);
+                    //Mapping data pada DataSnapshot ke dalam objek aptik
+                    final Pharmacy apotik = snapshot.getValue(Pharmacy.class);
                     //Mengambil Primary Key, digunakan untuk proses Update dan Delete
                     apotik.setKey(snapshot.getKey());
                     dataApotik.add(apotik);
@@ -111,72 +95,70 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(location, 13));
                     mMap.moveCamera(CameraUpdateFactory.newLatLng(location));
 
-                }
-
-                    mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+                    //Untuk Search
+                    searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                         @Override
-                        public View getInfoWindow(Marker arg0) {
-                            return null;
+                        public boolean onQueryTextSubmit(String s) {
+                            String locati = searchView.getQuery().toString();
+                            List<Address> addressList = null;
+                            if (locati != null || !locati.equals("")){
+                                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(location,30));
+                            }
+                            return false;
                         }
 
                         @Override
-                        public View getInfoContents(Marker marker) {
-
-                            Context mContext = getApplicationContext();
-                            LinearLayout info = new LinearLayout(mContext);
-                            info.setOrientation(LinearLayout.VERTICAL);
-
-                            TextView title = new TextView(mContext);
-                            title.setTextColor(Color.BLACK);
-                            title.setGravity(Gravity.CENTER);
-                            title.setTypeface(null, Typeface.BOLD);
-                            title.setText(marker.getTitle());
-
-                            TextView snippet = new TextView(mContext);
-                            snippet.setTextColor(Color.GRAY);
-                            snippet.setText(marker.getSnippet());
-
-                            info.addView(title);
-                            info.addView(snippet);
-
-                            return info;
+                        public boolean onQueryTextChange(String s) {
+                            return false;
                         }
-
-                    });
-
-                    /**Untuk Klik ke Halaman selanjutnya*/
-
-                    mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
-                        @Override
-                        public void onInfoWindowClick(Marker marker) {
-                            // call an activity(xml file)
-                            Intent intent = new Intent(MapsActivity.this, PemesananActivity.class);
-                            intent.putExtra("id_apotik",(String)marker.getTag());
-                            startActivity(intent);
-
-                        }
-
                     });
                 }
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
+                mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+                    @Override
+                    public View getInfoWindow(Marker arg0) {
+                        return null;
+                    }
 
-                }
-                //getData();
-            });
+                    @Override
+                    public View getInfoContents(Marker marker) {
 
-//        nama_apotik.setText(getNama);
-//        jumlah_stock_dewasa.setText(" Tersedia " + String.valueOf(getJumlahDewasa) +" masker ");
-//        jumlah_stock_anak.setText(" Tersedia " + String.valueOf(getJumlahAnak) +" masker ");
-//        harga_masker_dewasa.setText(" - Rp. " + String.valueOf(getHargaDewasa) + "/masker");
-//        harga_masker_anak.setText(" - Rp. " + String.valueOf(getHargaAnak) + "/masker");
-    }
+                        Context mContext = getApplicationContext();
+                        LinearLayout info = new LinearLayout(mContext);
+                        info.setOrientation(LinearLayout.VERTICAL);
 
+                        TextView title = new TextView(mContext);
+                        title.setTextColor(Color.BLACK);
+                        title.setGravity(Gravity.CENTER);
+                        title.setTypeface(null, Typeface.BOLD);
+                        title.setText(marker.getTitle());
 
+                        TextView snippet = new TextView(mContext);
+                        snippet.setTextColor(Color.GRAY);
+                        snippet.setText(marker.getSnippet());
 
-    @Override
-    public boolean onMarkerClick(Marker marker) {
-        return false;
+                        info.addView(title);
+                        info.addView(snippet);
+                        return info;
+                    }
+                });
+
+                /**Untuk Klik ke Halaman selanjutnya*/
+
+                mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+                    @Override
+                    public void onInfoWindowClick(Marker marker) {
+                        // call an activity(xml file)
+                        Intent intent = new Intent(MapsActivity.this, PemesananActivity.class);
+                        intent.putExtra("id_apotik",(String)marker.getTag());
+                        startActivity(intent);
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
     }
 }

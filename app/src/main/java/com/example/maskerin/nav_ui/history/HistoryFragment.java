@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -37,12 +38,19 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
+import static com.firebase.ui.auth.AuthUI.getApplicationContext;
+
 public class HistoryFragment extends Fragment {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private DatabaseReference databaseReference;
     private ArrayList<History> dataPesanan;
     private ArrayList<Pharmacy> dataApotik;
+    private String strDate = "12/05/0000";
+    private String lastOrder = "00/05/0000";
+    private Button button_pesan_masker;
+    private boolean output;
+    private TextView bolehpesan;
 
     public Button button;
     public TextView loading;
@@ -65,19 +73,22 @@ public class HistoryFragment extends Fragment {
         loading = root.findViewById(R.id.tv_loading);
         loading.setVisibility(View.VISIBLE);
 
+        button_pesan_masker = root.findViewById(R.id.btn_pesan_masker);
+        bolehpesan = root.findViewById(R.id.bolehpesan);
+
         GetData();
         return root;
     }
+
     private void GetData(){
         databaseReference = FirebaseDatabase.getInstance().getReference();
-
-//        user = FirebaseAuth.getInstance().getCurrentUser();
-//       final String  GetUserID = user.getUid();
         firebaseAuth = FirebaseAuth.getInstance();
 
         databaseReference.child("Pesanan").child(firebaseAuth.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                //setButtonOn();
+
                 dataPesanan = new ArrayList<>();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     History history = snapshot.getValue(History.class);
@@ -98,6 +109,40 @@ public class HistoryFragment extends Fragment {
         });
     }
 
+    private void setButtonOn() {
+        if (isCanOrder()){
+            button_pesan_masker.setEnabled(true);
+            bolehpesan.setVisibility(View.GONE);
+        } else{
+            button_pesan_masker.setEnabled(false);
+            bolehpesan.setVisibility(View.VISIBLE);
+            bolehpesan.setText("* Anda hanya diperbolehkan memesan sebanyak satu kali dalam 7 hari");
+        }
+    }
+
+    public boolean isCanOrder(){
+        String newOrder[] = strDate.split("/");
+        String lasOrder[] = lastOrder.split("/");
+
+        if(Integer.parseInt(newOrder[1]) - Integer.parseInt(lasOrder[1]) == 0 ){
+            int delta = Integer.parseInt(newOrder[0]) - Integer.parseInt(lasOrder[0]);
+            if (delta <= 7){
+                //Toast.makeText(getApplicationContext(), "jangan 1", Toast.LENGTH_SHORT).show();
+                output = false;
+            } else {
+                //Toast.makeText(getApplicationContext(), "gas 1", Toast.LENGTH_SHORT).show();
+                output = true;
+            }
+        } else if (Integer.parseInt(newOrder[0]) <= 7) {
+            //Toast.makeText(getApplicationContext(), "jangan 2", Toast.LENGTH_SHORT).show();
+            output = false;
+        } else{
+            //Toast.makeText(getApplicationContext(), "gas 2", Toast.LENGTH_SHORT).show();
+            output = true;
+        }
+        return output;
+    }
+
     public void onCreate(@Nullable Bundle savedInstanceState){
         setHasOptionsMenu(true);
         super.onCreate(savedInstanceState);
@@ -105,22 +150,12 @@ public class HistoryFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-       // inflater.inflate(R.menu.appbar_menu_pharmacy, menu);
-       // super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
-
-//        if(id == R.id.app_bar_search){
-//            Intent intent = new Intent(getActivity(), LoginActivity.class);
-//            startActivity(intent);
-//        }
-
         return super.onOptionsItemSelected(item);
     }
-
-
 }
 
